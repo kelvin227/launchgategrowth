@@ -1,0 +1,207 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ======================================================
+// ENUMS
+// ======================================================
+
+enum UserRole {
+  ADMIN
+  STAFF
+  ADVERTISER
+}
+
+enum CampaignStatus {
+  NEW
+  CONTACTED
+  PLANNING
+  OFFER_SENT
+  APPROVED
+  PAYMENT_PENDING
+  PAID
+  CAMPAIGN_PREPARATION
+  LIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum ContactMethod {
+  EMAIL
+  TELEGRAM
+  WHATSAPP
+  PHONE
+}
+
+// ======================================================
+// USERS
+// Internal LaunchGate team members
+// ======================================================
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  name     String?
+  password String
+  role     UserRole @default(STAFF)
+
+  notes CampaignNote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ======================================================
+// SERVICES
+// Example:
+// YouTube Campaigns
+// Instagram Campaigns
+// Telegram Campaigns
+// Web3 Campaigns
+// ======================================================
+
+model Service {
+  id          String @id @default(cuid())
+  name        String
+  slug        String @unique
+  description String
+  category    String
+  icon        String
+  helpsWith   String[] @default([])
+  tiers       Json[]   @default([])
+
+  active    Boolean @default(true)
+  sortOrder Int     @default(0)
+
+  campaigns Campaign[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+  @@index([category])
+  @@index([sortOrder])
+}
+
+// ======================================================
+// CAMPAIGNS
+// Initial campaign request submitted by an advertiser
+// ======================================================
+
+model Campaign {
+  id        String         @id @default(cuid())
+  reference String         @unique
+  status    CampaignStatus @default(NEW)
+
+  // ----------------------------------------------------
+  // COMPANY / PROJECT INFORMATION
+  // ----------------------------------------------------
+
+  companyName String
+  website     String?
+  industry    String?
+
+  // ----------------------------------------------------
+  // CONTACT INFORMATION
+  // ----------------------------------------------------
+
+  contactPersonName      String
+  businessEmail          String
+  telegramHandle         String?
+  phoneNumber            String?
+  preferredContactMethod ContactMethod
+
+  // ----------------------------------------------------
+  // CAMPAIGN INFORMATION
+  // ----------------------------------------------------
+
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  campaignGoal    String
+  targetPlatforms String[]
+  targetCountry   String?
+  startDate       DateTime?
+  duration        String?
+  estimatedBudget String?
+  campaignUrl     String?
+  additionalNotes String?
+
+  // Supporting links supplied by the client
+  supportingLinks String[]
+
+  // ----------------------------------------------------
+  // RELATIONS
+  // ----------------------------------------------------
+
+  attachments CampaignAttachment[]
+  notes       CampaignNote[]
+
+  // ----------------------------------------------------
+  // TIMESTAMPS
+  // ----------------------------------------------------
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ----------------------------------------------------
+  // INDEXES
+  // ----------------------------------------------------
+
+  @@index([status])
+  @@index([serviceId])
+  @@index([businessEmail])
+  @@index([createdAt])
+}
+
+// ======================================================
+// CAMPAIGN ATTACHMENTS
+// Files uploaded by the advertiser
+// ======================================================
+
+model CampaignAttachment {
+  id String @id @default(cuid())
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  fileName String
+  fileUrl  String
+  fileType String?
+  fileSize Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([campaignId])
+}
+
+// ======================================================
+// CAMPAIGN NOTES
+// Internal LaunchGate team notes
+// ======================================================
+
+model CampaignNote {
+  id String @id @default(cuid())
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([campaignId])
+  @@index([authorId])
+}
