@@ -1,5 +1,4 @@
 import Credentials from "next-auth/providers/credentials";
-import { hashPassword } from "./lib/utils";
 import { prisma } from "./lib/prisma";
 import bcrypt from "bcryptjs";
 import { NextAuthConfig } from "next-auth";
@@ -30,13 +29,17 @@ const providers = [
         if(!user) {
             return null
         } else {
-            const isMatch = bcrypt.compareSync(password, user.password)
+            const isMatch = bcrypt.compare(password, user.password)
             if (!isMatch){
                 return null
             }
         }
 
-        return user
+        return {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+        }
         
         
     }
@@ -45,4 +48,27 @@ const providers = [
 
 export const authConfig = {
     providers: providers,
+
+    session: {
+        strategy: "jwt",
+    },
+
+    callbacks: {
+        async jwt({ token, user }){
+            if(user){
+                token.role = user.role;
+            }
+
+            return token;
+        },
+
+        async session({ session, token }){
+            if(session.user){
+                session.user.id = token.sub!;
+                session.user.role = token.role as string;
+            }
+
+            return session;
+        },
+    }
 } satisfies NextAuthConfig

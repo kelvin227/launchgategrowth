@@ -1,8 +1,9 @@
 import { AdminShell } from "@/components/admin/admin-shell";
 import type { Metadata } from "next";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import "./globals.css";
+import { logout } from "@/lib/function/authaction";
 
 export const metadata: Metadata = {
   title: "LaunchGate — Managed Campaigns",
@@ -19,6 +20,10 @@ export default async function AdminLayout({
 
   if (!session?.user) {
     redirect("/admin/login");
+  }
+   if(session.user && session.user.role !== "ADMIN" && session.user.role !== "STAFF"){
+    console.log("User role is not admin or staff, redirecting to home page.");
+    redirect("/");
   }
 
   return <AdminShell>{children}</AdminShell>;
