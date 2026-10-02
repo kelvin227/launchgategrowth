@@ -1,9 +1,8 @@
 import { AdminShell } from "@/components/admin/admin-shell";
 import type { Metadata } from "next";
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import "./globals.css";
-import { logout } from "@/lib/function/authaction";
 
 export const metadata: Metadata = {
   title: "LaunchGate — Managed Campaigns",
@@ -26,5 +25,5 @@ export default async function AdminLayout({
     redirect("/");
   }
 
-  return <AdminShell>{children}</AdminShell>;
+  return <AdminShell role={session.user.role}>{children}</AdminShell>;
 }

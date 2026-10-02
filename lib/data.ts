@@ -300,6 +300,8 @@ export const statusLabels: Record<string, string> = {
   NEW: "New",
   CONTACTED: "Contacted",
   PLANNING: "Planning",
+  PENDING: "Pending",
+  ARCHIVED: "Archived",
   OFFER_SENT: "Offer sent",
   APPROVED: "Approved",
   PAYMENT_PENDING: "Payment pending",

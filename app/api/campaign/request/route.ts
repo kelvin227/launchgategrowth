@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { prisma } from "@/lib/prisma";
+import { appendAuditLog, auditSnapshot } from "@/lib/audit";
 
 const contactMethodMap: Record<string, "EMAIL" | "TELEGRAM" | "WHATSAPP" | "PHONE"> = {
   EMAIL: "EMAIL",
@@ -84,10 +85,9 @@ export async function POST(request: Request) {
 
     const reference = buildReference();
 
-    const campaign = await prisma.campaign.create({
-      data: {
+    const campaignData = {
         reference,
-        status: "NEW",
+        status: "NEW" as const,
         companyName: String(body.companyName).trim(),
         website: body.website ? String(body.website).trim() : null,
         industry: String(body.industry).trim(),
@@ -106,7 +106,17 @@ export async function POST(request: Request) {
         campaignUrl: body.campaignUrl ? String(body.campaignUrl).trim() : null,
         additionalNotes: body.additionalNotes ? String(body.additionalNotes).trim() : null,
         supportingLinks: normalizeStringArray(body.supportingLinks),
-      },
+      };
+    const campaign = await prisma.$transaction(async (transaction) => {
+      const created = await transaction.campaign.create({ data: campaignData });
+      await appendAuditLog(transaction, {
+        actor: { label: "Public campaign request" },
+        action: "CREATE",
+        entityType: "Campaign",
+        entityId: created.id,
+        details: { snapshot: auditSnapshot(created) },
+      });
+      return created;
     });
 
     return NextResponse.json({ success: true, campaignId: campaign.id, reference }, { status: 201 });

@@ -29,7 +29,7 @@ const providers = [
         if(!user) {
             return null
         } else {
-            const isMatch = bcrypt.compare(password, user.password)
+            const isMatch = await bcrypt.compare(password, user.password)
             if (!isMatch){
                 return null
             }

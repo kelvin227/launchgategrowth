@@ -1,0 +1,81 @@
+.staffManagement [class*="bg-slate-950"] {
+  background-color: var(--page-bg);
+}
+
+.staffManagement [class*="bg-slate-900"] {
+  background-color: var(--card);
+}
+
+.staffManagement [class*="bg-slate-800"] {
+  background-color: var(--sage-muted);
+}
+
+.staffManagement [class*="border-slate-800"],
+.staffManagement [class*="border-slate-700"] {
+  border-color: var(--line-soft);
+}
+
+.staffManagement [class*="text-slate-100"],
+.staffManagement [class*="text-slate-200"],
+.staffManagement [class*="text-slate-300"] {
+  color: var(--text);
+}
+
+.staffManagement [class*="text-slate-400"],
+.staffManagement [class*="text-slate-500"],
+.staffManagement [class*="text-slate-600"] {
+  color: var(--muted);
+}
+
+.staffManagement [class*="bg-indigo-"] {
+  background-color: var(--gold);
+}
+
+.staffManagement [class*="bg-indigo-"] svg,
+.staffManagement [class*="bg-indigo-"] {
+  color: var(--page-bg);
+}
+
+.staffManagement [class*="text-indigo-"] {
+  color: var(--gold);
+}
+
+.staffManagement [class*="border-indigo-"] {
+  border-color: var(--line);
+}
+
+.staffManagement [class*="shadow-indigo-"] {
+  --tw-shadow-color: rgba(215, 180, 107, 0.18);
+}
+
+.staffManagement [class*="from-indigo-"] {
+  background-image: linear-gradient(135deg, var(--gold), var(--sage));
+}
+
+.staffManagement [class*="to-violet-"] {
+  --tw-gradient-to: var(--sage);
+}
+
+.staffManagement [class*="hover:bg-slate-800"]:hover {
+  background-color: var(--sage-muted);
+}
+
+.staffManagement [class*="hover:bg-slate-700"]:hover {
+  background-color: var(--sage-deep);
+}
+
+.staffManagement [class*="hover:border-slate-700"]:hover {
+  border-color: var(--line);
+}
+
+.staffManagement [class*="hover:text-indigo-"]:hover {
+  color: var(--gold);
+}
+
+.staffManagement [class*="focus:border-indigo-"]:focus {
+  border-color: var(--gold);
+}
+
+.staffManagement [class*="focus:ring-indigo-"]:focus {
+  --tw-ring-color: rgba(215, 180, 107, 0.2);
+}

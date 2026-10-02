@@ -1,4 +1,4 @@
-import { CampaignStatus } from "@/lib/type";
+import { CampaignStatus, ContactStatus } from "@/lib/type";
 import { statusLabels } from "@/lib/data";
 
 const styles: Record<CampaignStatus, string> = {
@@ -19,6 +19,23 @@ export function StatusBadge({ status }: { status: CampaignStatus }) {
   return (
     <span
       className={`inline-flex items-center rounded-sm border px-2.5 py-1 text-xs font-medium ${styles[status]}`}
+    >
+      {statusLabels[status]}
+    </span>
+  );
+}
+
+const styles2: Record<ContactStatus, string> = {
+  // NEW: "bg-signal/15 text-signal-bright border-signal/30",
+  CONTACTED: "bg-ink-600/40 text-ink-100 border-line",
+  PENDING: "bg-amber/15 text-amber border-amber/30",
+  ARCHIVED: "bg-ink-600/40 text-ink-300 border-line",
+};
+
+export function StatusBadge2({ status }: { status: ContactStatus }) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-sm border px-2.5 py-1 text-xs font-medium ${styles2[status]}`}
     >
       {statusLabels[status]}
     </span>

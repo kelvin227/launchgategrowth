@@ -32,6 +32,11 @@ export type CampaignStatus =
   | "COMPLETED"
   | "CANCELLED";
 
+export type ContactStatus =
+  | "PENDING"
+  | "CONTACTED"
+  | "ARCHIVED";
+
 export type CampaignNote = {
   id: string;
   author: string;

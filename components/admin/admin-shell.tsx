@@ -3,19 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logout } from "@/lib/function/authaction";
+import { formattedDate } from "@/lib/utils";
+import { PresenceHeartbeat } from "@/components/presence-heartbeat";
 
 const nav = [
   { href: "/admin", label: "Dashboard", icon: "01" },
   { href: "/admin/campaigns", label: "Campaign requests", icon: "02" },
-  { href: "/admin/services", label: "Services", icon: "03" },
-  { href: "/admin/settings", label: "Settings", icon: "04" },
+  { href: "/admin/contacts", label: "Contacts", icon: "03" },
+  { href: "/admin/services", label: "Services", icon: "04" },
+  { href: "/admin/staff", label: "Staff", icon: "05"},
+  { href: "/admin/activity", label: "Activity log", icon: "06" },
+  { href: "/admin/email", label: "Email", icon: "07" },
+  { href: "/admin/settings", label: "Settings", icon: "08" },
 ];
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+export function AdminShell({ children, role }: { children: React.ReactNode; role?: string }) {
   const pathname = usePathname();
 
   return (
     <div className="admin-app">
+      <PresenceHeartbeat />
       <aside className="admin-sidebar">
         <div className="admin-sidebar-head">
           <Link href="/" className="admin-brand">
@@ -30,7 +37,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <div className="admin-sidebar-section">
           <span className="admin-section-label">Navigation</span>
           <nav className="admin-nav">
-            {nav.map((item) => {
+            {nav
+              .filter((item) => item.href !== "/admin/activity" || role === "ADMIN")
+              .map((item) => item.href === "/admin/email" && role === "STAFF"
+                ? { ...item, href: "/staff/email" }
+                : item)
+              .map((item) => {
               const active =
                 item.href === "/admin"
                   ? pathname === "/admin"
@@ -63,7 +75,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <section className="admin-topbar">
           <div>
             <span className="admin-topbar-kicker">LaunchGate Admin</span>
-            <span className="admin-topbar-date">Tuesday, Sep 10, 2026</span>
+            <span className="admin-topbar-date">{formattedDate()}</span>
           </div>
           <div className="admin-topbar-actions">
             <button className="admin-icon-button" aria-label="Notifications">

@@ -7,14 +7,6 @@ export function hashPassword(password: string){
 
   return hash
 }
-export function generateReferralCode(length = 8) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let code = "";
-  for (let i = 0; i < length; i++) {
-    code += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return code;
-}
 export function stripAppSubdomain(host: string): string {
   // Remove port if present
   const [hostname, port] = host.split(':');
@@ -33,4 +25,15 @@ export function generateVerificationCode(length = 6) {
     code += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return code;
+}
+export function formattedDate(){
+  const today = new Date();
+
+    const formattedDate = new Intl.DateTimeFormat("en-US", {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    }).format(today);
+    return formattedDate;
 }

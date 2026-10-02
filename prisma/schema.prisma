@@ -41,6 +41,12 @@ enum ContactMethod {
   PHONE
 }
 
+enum ContactStatus {
+  PENDING
+  CONTACTED
+  ARCHIVED
+}
+
 // ======================================================
 // USERS
 // Internal LaunchGate team members
@@ -50,13 +56,34 @@ model User {
   id       String   @id @default(cuid())
   email    String   @unique
   name     String?
+  jobTitle String?
   password String
   role     UserRole @default(STAFF)
 
   notes CampaignNote[]
+  auditLogs AuditLog[] @relation("AuditActor")
+
+  lastLoginAt DateTime?
+  lastSeenAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  actorLabel String
+  action     String
+  entityType String
+  entityId   String?
+  details    Json?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([entityType, entityId])
+  @@index([actorId])
 }
 
 // ======================================================
@@ -89,6 +116,28 @@ model Service {
   @@index([active])
   @@index([category])
   @@index([sortOrder])
+}
+
+model ServiceMutationRateLimit {
+  key             String   @id
+  count           Int      @default(0)
+  windowStartedAt DateTime @default(now()) @map("window_started_at")
+
+  @@map("service_mutation_rate_limits")
+}
+
+model Contact {
+  id String @id @default(cuid())
+  name String 
+  email String
+  message String 
+  status ContactStatus @default(PENDING)
+  companyName String?
+  notes String?
+  trackingId String @unique @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ======================================================
