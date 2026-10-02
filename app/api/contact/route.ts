@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       from: 'No reply <no-reply@jbcapi.com>',
       to: [body.email],
       subject: 'Your Contact Request has been recieved',
-      react: EmailTemplate({ firstName: body.name, trackingId: contact.trackingId }),
+      react: EmailTemplate({ firstName: body.name, trackingId: contact.trackingId,  contact: true}),
     });
 
     if (error) {

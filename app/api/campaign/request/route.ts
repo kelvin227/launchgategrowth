@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { prisma } from "@/lib/prisma";
 import { appendAuditLog, auditSnapshot } from "@/lib/audit";
+import { EmailTemplate } from "@/components/template/contact-template";
+import { Resend } from "resend";
+
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const contactMethodMap: Record<string, "EMAIL" | "TELEGRAM" | "WHATSAPP" | "PHONE"> = {
   EMAIL: "EMAIL",
@@ -118,6 +123,14 @@ export async function POST(request: Request) {
       });
       return created;
     });
+
+    const { data, error } = await resend.emails.send({
+          from: 'No reply <no-reply@jbcapi.com>',
+          to: [String(body.businessEmail).trim().toLowerCase()],
+          subject: 'Your Campaign Request has been recieved',
+          react: EmailTemplate({ firstName: body.name, contact: false }),
+        });
+    
 
     return NextResponse.json({ success: true, campaignId: campaign.id, reference }, { status: 201 });
   } catch (error) {

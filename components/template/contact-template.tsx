@@ -2,13 +2,15 @@ import * as React from 'react';
 
 interface EmailTemplateProps {
   firstName: string;
-  trackingId: string;
+  trackingId?: string;
+  contact: boolean;
 }
 
-export function EmailTemplate({ firstName, trackingId }: EmailTemplateProps) {
-  return (
-    <div>
-      <h1>We received your contact request</h1>
+export function EmailTemplate({ firstName, trackingId, contact }: EmailTemplateProps) {
+  if (contact) {
+    return (
+      <div>
+        <h1>We received your contact request</h1>
       <p>Hi {firstName},</p>
       <p>
         Thank you for reaching out. Your contact request has been received, and
@@ -18,4 +20,17 @@ export function EmailTemplate({ firstName, trackingId }: EmailTemplateProps) {
       <p>We appreciate your patience.</p>
     </div>
   );
+} else{
+ return (
+    <div>
+      <h1>We received your campaign request</h1>
+      <p>Hi {firstName},</p>
+      <p>
+        Thank you for reaching out. Your campaign request has been received, and
+        an admin will respond to you as soon as possible.
+      </p>
+      <p>We appreciate your patience.</p>
+    </div>
+  );
+}
 }
