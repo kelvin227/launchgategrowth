@@ -28,12 +28,6 @@ export function SiteFooter() {
               <li><Link href="/campaign/request">Start a campaign</Link></li>
             </ul>
           </div>
-          <div>
-            <p className="footer-heading">Team</p>
-            <ul>
-              <li><Link href="/admin">Admin panel</Link></li>
-            </ul>
-          </div>
         </div>
       </div>
       <div className="footer-bottom">
