@@ -204,7 +204,7 @@ a {
 
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(3, minmax(120px, auto));
+  grid-template-columns: repeat(2, minmax(120px, auto));
   gap: 50px;
 }
 
