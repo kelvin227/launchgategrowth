@@ -18,7 +18,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="admin-app">
+    <div className="staff-app">
       <PresenceHeartbeat />
       <aside className="admin-sidebar">
         <div className="admin-sidebar-head">
@@ -26,7 +26,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <span className="admin-brand-mark">LG</span>
             <span>
               <span className="admin-brand-name">LaunchGate</span>
-              <span className="admin-brand-subtitle">Operations</span>
+              <span className="admin-brand-subtitle">Staff workspace</span>
             </span>
           </Link>
         </div>
@@ -66,7 +66,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <main className="admin-main">
         <section className="admin-topbar">
           <div>
-            <span className="admin-topbar-kicker">LaunchGate Operations</span>
+            <span className="admin-topbar-kicker">LaunchGate Staff</span>
             <span className="admin-topbar-date">Staff workspace</span>
           </div>
           <div className="admin-topbar-actions">

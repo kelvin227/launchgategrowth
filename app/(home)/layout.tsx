@@ -29,10 +29,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+    <div className="home-page public-site">
+      <SiteHeader />
+      <main>{children}</main>
+      <SiteFooter />
     </div>
   );
 }

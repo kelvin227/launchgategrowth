@@ -40,8 +40,7 @@ const platformOptions = [
   "Other",
 ];
 
-const inputClass =
-  "mt-2 w-full rounded-xl border border-emerald-800/60 bg-black/30 px-4 py-3 text-sm text-emerald-50 placeholder:text-emerald-900 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/40";
+const inputClass = "campaign-input mt-2 w-full rounded-xl border px-4 py-3 text-sm";
 
 const steps = [
   { id: "company", label: "Company" },
@@ -64,7 +63,7 @@ function Field({ label, required, children, hint }: { label: string; required?: 
 
 export default function CampaignRequestPage() {
   return (
-    <Suspense fallback={<div className="request-loading-card"><span className="request-loading-icon">✦</span><span>Preparing campaign request…</span></div>}>
+    <Suspense fallback={<div className="public-page campaign-request-page request-loading-screen"><div className="request-loading-card"><span className="request-loading-icon">✦</span><span>Preparing campaign request…</span></div></div>}>
       <CampaignRequestForm />
     </Suspense>
   );
@@ -217,19 +216,19 @@ function CampaignRequestForm() {
   }
 
   return (
-    <div className="flex flex-col w-full items-center justify-center px-4 py-8">
+    <div className="public-page campaign-request-page">
       {/* 
         Container layout: 
         - Mobile: Flex-col (Text card at top, Form card at bottom)
         - Desktop (lg): Flex-row side-by-side 
       */}
-      <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-6 items-start justify-center">
+      <div className="request-layout">
         
         {/* TEXT / INTRO CARD */}
-        <div className="w-full lg:w-1/3 bg-emerald-950/20 border border-emerald-800/40 rounded-2xl p-6 backdrop-blur-md shadow-xl transition-all duration-300">
+        <div className="request-panel request-intro-panel">
           <div className="flex justify-between items-center cursor-pointer pb-4 border-b border-emerald-800/30" onClick={() => setIsIntroOpen(!isIntroOpen)}>
             <span className="section-tag text-xs uppercase tracking-wider text-emerald-400 font-semibold">Campaign request</span>
-            <button className="text-emerald-400 text-sm focus:outline-none">
+            <button type="button" className="request-collapse-button">
               {isIntroOpen ? "▲ Close" : "▼ Open"}
             </button>
           </div>
@@ -258,6 +257,7 @@ function CampaignRequestForm() {
                     }`}
                     onClick={() => setStep(index)}
                     aria-label={`Go to ${item.label}`}
+                    aria-current={index === step ? "step" : undefined}
                   >
                     <span>{String(index + 1).padStart(2, "0")}</span>
                   </button>
@@ -268,7 +268,7 @@ function CampaignRequestForm() {
         </div>
 
         {/* FORM CARD */}
-        <div className="w-full lg:w-2/3 bg-emerald-950/20 border border-emerald-800/40 rounded-2xl p-6 backdrop-blur-md shadow-xl transition-all duration-300">
+        <div className="request-panel request-form-panel">
           <div className="flex justify-between items-center cursor-pointer pb-4 border-b border-emerald-800/30" onClick={() => setIsFormOpen(!isFormOpen)}>
             <div>
               <span className="request-form-kicker text-xs text-emerald-400 font-semibold block">Step {step + 1} of {steps.length}</span>
@@ -276,7 +276,7 @@ function CampaignRequestForm() {
             </div>
             <div className="flex items-center gap-3">
               <span className="request-form-total text-xs text-emerald-400/60 hidden sm:inline">LaunchGate intake</span>
-              <button className="text-emerald-400 text-sm focus:outline-none">
+              <button type="button" className="request-collapse-button">
                 {isFormOpen ? "▲ Close" : "▼ Open"}
               </button>
             </div>
@@ -388,6 +388,7 @@ function CampaignRequestForm() {
                                 : "bg-black/30 border-emerald-800/60 text-emerald-300 hover:border-emerald-600"
                             }`}
                             onClick={() => togglePlatform(platform)}
+                            aria-pressed={form.targetPlatforms.includes(platform)}
                           >
                             {platform}
                           </button>
@@ -450,12 +451,12 @@ function CampaignRequestForm() {
               )}
 
               <div className="request-form-actions flex justify-between items-center pt-6 border-t border-emerald-800/30 mt-6">
-                <button type="button" className="button button-outline px-4 py-2 rounded-xl border border-emerald-800/60 text-emerald-300 hover:bg-emerald-950/40 disabled:opacity-50" disabled={step === 0} onClick={() => setStep(Math.max(0, step - 1))}>Back</button>
+                <button type="button" className="button button-secondary request-action-button" disabled={step === 0} onClick={() => setStep(Math.max(0, step - 1))}>Back</button>
 
                 {step < steps.length - 1 ? (
-                  <button type="submit" className="button button-primary px-6 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium">Continue</button>
+                  <button type="submit" className="button button-primary request-action-button">Continue</button>
                 ) : (
-                  <button type="submit" className="button button-primary px-6 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium disabled:opacity-50" disabled={submitting}>
+                  <button type="submit" className="button button-primary request-action-button" disabled={submitting}>
                     {submitting ? "Submitting..." : "Submit request"}
                   </button>
                 )}

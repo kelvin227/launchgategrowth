@@ -37,3 +37,5 @@ export function formattedDate(){
     }).format(today);
     return formattedDate;
 }
+
+export { cn } from "cn"

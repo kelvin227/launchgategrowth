@@ -25,46 +25,44 @@ const steps = [
 
 export default function CampaignSuccessPage() {
   return (
-    <div className="container-content py-24">
-      <div className="max-w-lg">
-        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-moss/40 bg-moss/15 text-moss">
-          ✓
-        </span>
-        <h1 className="mt-6 font-display text-4xl text-ink-50">
-          Campaign request received.
-        </h1>
-        <p className="mt-5 text-sm leading-relaxed text-ink-400">
-          Thank you for choosing LaunchGate. Our Growth Team will review your
-          campaign requirements and contact you shortly to discuss the
-          campaign structure, timing, audience, and next steps.
-        </p>
-      </div>
+    <div className="public-page success-page">
+      <div className="container-content public-content">
+        <div className="success-hero">
+          <span className="success-mark" aria-hidden="true">✓</span>
+          <p className="public-kicker">Request received</p>
+          <h1>Campaign request received.</h1>
+          <p className="success-description">
+            Thank you for choosing LaunchGate. Our Growth Team will review your
+            campaign requirements and contact you shortly to discuss the
+            campaign structure, timing, audience, and next steps.
+          </p>
+        </div>
 
-      <div className="mt-16 max-w-2xl divide-y divide-line border-y border-line">
-        {steps.map((step) => (
-          <div key={step.n} className="flex gap-6 py-6">
-            <span className="font-display text-lg text-ink-500">{step.n}</span>
-            <div>
-              <p className="text-sm text-ink-50">{step.title}</p>
-              <p className="mt-1 text-sm text-ink-400">{step.body}</p>
-            </div>
+        <section className="success-steps">
+          <div className="public-section-heading">
+            <span className="public-index">Next</span>
+            <h2>What happens from here</h2>
+            <span className="public-heading-rule" aria-hidden="true" />
           </div>
-        ))}
-      </div>
+          <div className="success-step-grid">
+            {steps.map((step) => (
+              <article key={step.n} className="success-step-card">
+                <span className="success-step-number">{step.n}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
-      <div className="mt-12 flex flex-wrap gap-4">
-        <Link
-          href="/contact"
-          className="rounded-sm border border-line px-6 py-3 text-sm font-medium text-ink-100 transition-colors hover:border-ink-400"
-        >
-          Contact LaunchGate
-        </Link>
-        <Link
-          href="/"
-          className="rounded-sm px-6 py-3 text-sm font-medium text-ink-400 transition-colors hover:text-ink-100"
-        >
-          Back to home
-        </Link>
+        <div className="success-actions">
+          <Link href="/contact" className="button button-primary">
+            Contact LaunchGate
+          </Link>
+          <Link href="/" className="button button-secondary">
+            Back to home
+          </Link>
+        </div>
       </div>
     </div>
   );

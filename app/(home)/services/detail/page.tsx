@@ -8,10 +8,14 @@ export async function generateStaticParams() {
     select: { slug: true },
   });
 
-  return services.map((s) => ({ slug: s.slug }));
+  return services.map((service) => ({ slug: service.slug }));
 }
 
-export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ServiceDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const service = await prisma.service.findFirst({
     where: { slug, active: true },
@@ -19,63 +23,69 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
   if (!service) notFound();
 
+  const tiers = (service.tiers as Array<{ name: string; description: string }> | null) ?? [];
+
   return (
-    <div>
-      <section className="border-b border-line/70">
-        <div className="container-content py-20">
-          <Link href="/services" className="text-sm text-ink-400 hover:text-ink-100">
-            ← All services
+    <div className="public-page service-detail-page">
+      <section className="public-hero">
+        <div className="container-content">
+          <Link href="/services" className="public-back-link">
+            <span aria-hidden="true">←</span> All services
           </Link>
-          <p className="mt-6 text-sm text-signal-bright">{service.category}</p>
-          <h1 className="mt-3 max-w-xl font-display text-4xl text-ink-50 md:text-5xl">
-            {service.name}
-          </h1>
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-ink-300">
-            {service.description}
-          </p>
-          <Link
-            href={`/campaign/request?service=${service.slug}`}
-            className="mt-10 inline-block rounded-sm bg-signal px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-signal-bright"
-          >
-            Start campaign
-          </Link>
+          <div className="public-hero-copy">
+            <p className="public-kicker">{service.category}</p>
+            <h1>{service.name}</h1>
+            <p>{service.description}</p>
+            <Link
+              href={`/campaign/request?service=${service.slug}`}
+              className="button button-primary"
+            >
+              Start a campaign
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="container-content grid gap-16 py-20 md:grid-cols-[1fr_1.2fr]">
-        <div>
-          <h2 className="font-display text-xl text-ink-100">What we can help with</h2>
-          <ul className="mt-6 space-y-3">
+      <section className="container-content public-content service-detail-grid">
+        <article className="detail-panel">
+          <div className="public-section-heading">
+            <span className="public-index">01</span>
+            <h2>What we can help with</h2>
+          </div>
+          <ul className="detail-list">
             {(service.helpsWith ?? []).map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm text-ink-300">
-                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-signal-bright" />
+              <li key={item}>
+                <span className="detail-list-mark" aria-hidden="true">↗</span>
                 {item}
               </li>
             ))}
           </ul>
-        </div>
+        </article>
 
-        <div>
-          <h2 className="font-display text-xl text-ink-100">Campaign types</h2>
-          <p className="mt-2 text-sm text-ink-400">
+        <article className="detail-panel">
+          <div className="public-section-heading">
+            <span className="public-index">02</span>
+            <h2>Campaign types</h2>
+          </div>
+          <p className="detail-intro">
             The team determines the final campaign structure and price after
             reviewing your request.
           </p>
-          <div className="mt-6 divide-y divide-line border-y border-line">
-            {(service.tiers as Array<{name: string; description: string}> ?? []).map((tier) => (
-              <div key={tier.name} className="py-5">
-                <p className="text-sm text-ink-50">{tier.name}</p>
-                <p className="mt-1 text-sm text-ink-400">{tier.description}</p>
+          <div className="tier-list">
+            {tiers.map((tier) => (
+              <div key={tier.name} className="tier-card">
+                <h3>{tier.name}</h3>
+                <p>{tier.description}</p>
               </div>
             ))}
           </div>
           <Link
             href={`/campaign/request?service=${service.slug}`}
-            className="mt-8 inline-block text-sm text-signal-bright hover:text-signal-bright/80"
+            className="text-link"
           >
-            Request this campaign
+            Request this campaign <span aria-hidden="true">→</span>
           </Link>
-        </div>
+        </article>
       </section>
     </div>
   );

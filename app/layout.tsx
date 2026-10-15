@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Fraunces, Inter, Geist } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { cn } from "@/lib/utils";
 
 const display = Fraunces({
   subsets: ["latin"],
@@ -11,11 +12,7 @@ const display = Fraunces({
   variable: "--font-display",
 });
 
-const sans = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-sans",
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "LaunchGate — Managed Campaigns",
@@ -29,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
+    <html lang="en" className={cn(display.variable, "font-sans", geist.variable)}>
       <body className="flex min-h-screen flex-col font-sans">
         <main className="flex-1">{children}</main>
       </body>

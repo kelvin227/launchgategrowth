@@ -16,6 +16,13 @@ const categories = [
   },
 ] as const;
 
+const steps = [
+  "You submit a campaign request",
+  "Our team reviews and contacts you",
+  "We structure a custom offer",
+  "Campaign goes live once agreed",
+];
+
 export default async function HomePage() {
   const services = await prisma.service.findMany({
     where: { active: true },
@@ -24,17 +31,21 @@ export default async function HomePage() {
 
   return (
     <div className="home-page">
+      {/* HERO */}
       <section className="hero-section">
+        <div className="hero-glow" aria-hidden />
         <div className="container-content hero-grid">
           <div className="hero-copy">
             <div className="section-tag">Managed campaigns, not follower counts</div>
             <h1 className="hero-title">
-              You set the goal.<br />
-              We build the campaign.<br />
+              You set the goal.
+              <br />
+              We build the campaign.
+              <br />
               <span className="hero-title-gold">Real people</span> create the impact.
             </h1>
             <p className="hero-lede">
-              LaunchGate is a campaign-request platform. Tell us what you're
+              LaunchGate is a campaign-request platform. Tell us what you&apos;re
               trying to achieve, and our Growth Team reviews, structures, and
               runs a campaign around it — with real participation, not
               inflated numbers.
@@ -48,28 +59,17 @@ export default async function HomePage() {
                 Explore services
               </Link>
             </div>
-
-            <div className="hero-proof">
-              <span><strong>03</strong> campaign systems</span>
-              <span><strong>24h</strong> first review window</span>
-              <span><strong>01</strong> growth brief</span>
-            </div>
           </div>
 
           <aside className="campaign-card">
             <div className="campaign-card-top">
               <span className="mini-label">How a campaign moves</span>
-              <span className="campaign-index">01 / 04</span>
+              <span className="campaign-index">4 steps</span>
             </div>
             <ol className="campaign-steps">
-              {[
-                "You submit a campaign request",
-                "Our team reviews and contacts you",
-                "We structure a custom offer",
-                "Campaign goes live once agreed",
-              ].map((step, i) => (
+              {steps.map((step, i) => (
                 <li key={step} className="campaign-step">
-                  <span className="step-number">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="step-number">{i + 1}</span>
                   <span className="step-text">{step}</span>
                 </li>
               ))}
@@ -82,13 +82,34 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* STATS STRIP */}
+      <section className="stats-strip">
+        <div className="container-content stats-grid">
+          <div className="stat">
+            <strong>3</strong>
+            <span>campaign systems</span>
+          </div>
+          <div className="stat">
+            <strong>24h</strong>
+            <span>first review window</span>
+          </div>
+          <div className="stat">
+            <strong>1</strong>
+            <span>growth brief</span>
+          </div>
+          <div className="stat">
+            <strong>100%</strong>
+            <span>real participants</span>
+          </div>
+        </div>
+      </section>
+
+      {/* CATEGORIES */}
       <section className="categories-section">
         <div className="container-content">
           <div className="section-heading">
             <span className="section-tag">Campaign capability</span>
-            <h2>
-              Campaigns across the places that matter to your audience
-            </h2>
+            <h2>Campaigns across the places that matter to your audience</h2>
           </div>
 
           <div className="category-grid">
@@ -96,12 +117,14 @@ export default async function HomePage() {
               const catServices = services.filter((s) => s.category === cat.name);
               return (
                 <article key={cat.name} className="category-tile">
-                  <p className="category-name">{cat.name}</p>
+                  <h3 className="category-name">{cat.name}</h3>
                   <p className="category-description">{cat.description}</p>
                   <ul className="category-list">
                     {catServices.slice(0, 5).map((s) => (
                       <li key={s.id}>
-                        <Link href={`/services/${s.slug}`}>{s.name.replace(" Campaigns", "")}</Link>
+                        <Link href={`/services/${s.slug}`}>
+                          {s.name.replace(" Campaigns", "")}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -112,12 +135,13 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* CUSTOM BAND */}
       <section className="custom-band">
         <div className="container-content custom-band-inner">
           <div>
             <h2>Have something different in mind?</h2>
             <p>
-              If your campaign doesn't fit a standard service, describe it
+              If your campaign doesn&apos;t fit a standard service, describe it
               directly and our team will scope it from scratch.
             </p>
           </div>
@@ -127,6 +151,7 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* PRINCIPLE */}
       <section className="principle-section">
         <div className="container-content">
           <blockquote>

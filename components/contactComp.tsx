@@ -1,5 +1,5 @@
 "use client";
-import { Clipboard, ClipboardCheck, Copy, CopyCheck } from "lucide-react";
+import { Copy, CopyCheck } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -49,6 +49,7 @@ export default function ContactComp() {
       if (!response.ok) {
         setSuccess(false);
         setError("Failed to send message");
+        return;
       }
 
       const data = await response.json();
@@ -62,93 +63,95 @@ export default function ContactComp() {
       setMessage("");
     } catch (error) {
       setSuccess(false);
-      setError(error as string);
+      setError(error instanceof Error ? error.message : "Failed to send message");
       console.error(error);
     } finally {
       setLoading(false);
     }
   }
   return (
-    <div className="container-content py-20">
-      <div className="grid gap-16 md:grid-cols-[1fr_1fr]">
-        <div>
-          <p className="text-sm text-signal-bright">Contact</p>
-          <h1 className="mt-4 font-display text-4xl text-ink-50">
+    <div className="public-page contact-page">
+      <div className="container-content public-content">
+      <div className="public-contact-layout">
+        <div className="public-contact-copy">
+          <p className="public-kicker">Get in touch</p>
+          <h1>
             Talk to the Growth Team.
           </h1>
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-ink-400">
+          <p className="contact-intro">
             Already submitted a campaign request? Our team will reach out
             directly. For anything else, reach us here.
           </p>
 
-          <dl className="mt-10 space-y-6 border-t border-line pt-8 text-sm">
+          <dl className="contact-details">
             <div>
-              <dt className="text-ink-500">Email</dt>
-              <dd className="mt-1 text-ink-100">hello@launchgate.co</dd>
+              <dt>Email</dt>
+              <dd>hello@launchgate.co</dd>
             </div>
             <div>
-              <dt className="text-ink-500">Telegram</dt>
-              <dd className="mt-1 text-ink-100">@launchgate</dd>
+              <dt>Telegram</dt>
+              <dd>@launchgate</dd>
             </div>
             <div>
-              <dt className="text-ink-500">Response time</dt>
-              <dd className="mt-1 text-ink-100">Within one business day</dd>
+              <dt>Response time</dt>
+              <dd>Within one business day</dd>
             </div>
           </dl>
 
           <Link
             href="/campaign/request"
-            className="mt-10 inline-block rounded-sm bg-signal px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-signal-bright"
+            className="button button-secondary"
           >
             Start a campaign instead
           </Link>
         </div>
 
-        <form className={success && error === "" ? "hidden" :"space-y-6"} onSubmit={handleSubmit}>
+        <form className={`contact-form${success && error === "" ? " is-hidden" : ""}`} onSubmit={handleSubmit}>
+          {error && <p className="contact-error" role="alert">{error}</p>}
           <label className="block">
-            <span className="text-sm text-ink-200">Name</span>
-            <input className="mt-2 w-full rounded-sm border border-line bg-field px-4 py-2.5 text-sm text-ink-50 placeholder:text-ink-500 focus:border-signal focus:outline-none" placeholder="Your name" value={name} onChange={(e) => {setName(e.target.value) }} />
+            <span>Name</span>
+            <input className="contact-input" placeholder="Your name" value={name} onChange={(e) => {setName(e.target.value) }} />
           </label>
           <label className="block">
-            <span className="text-sm text-ink-200">Email</span>
-            <input type="email" className="mt-2 w-full rounded-sm border border-line bg-field px-4 py-2.5 text-sm text-ink-50 placeholder:text-ink-500 focus:border-signal focus:outline-none" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <span>Email</span>
+            <input type="email" className="contact-input" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </label>
             <label className="block">
-            <span className="text-sm text-ink-200">Company Name</span>
-            <input className="mt-2 w-full rounded-sm border border-line bg-field px-4 py-2.5 text-sm text-ink-50 placeholder:text-ink-500 focus:border-signal focus:outline-none" placeholder="bitcoin group of investor" value={company} onChange={(e) => setCompany(e.target.value)}/>
+            <span>Company Name</span>
+            <input className="contact-input" placeholder="Your company" value={company} onChange={(e) => setCompany(e.target.value)}/>
           </label>
           <label className="block">
-            <span className="text-sm text-ink-200">Message</span>
-            <textarea rows={5} className="mt-2 w-full rounded-sm border border-line bg-field px-4 py-2.5 text-sm text-ink-50 placeholder:text-ink-500 focus:border-signal focus:outline-none" placeholder="How can we help?"  value={message} onChange={(e) => setMessage(e.target.value)}/>
+            <span>Message</span>
+            <textarea rows={5} className="contact-input" placeholder="How can we help?"  value={message} onChange={(e) => setMessage(e.target.value)}/>
           </label>
           <button
             type="submit"
-            className="rounded-sm border border-line px-6 py-3 text-sm font-medium text-ink-100 transition-colors hover:border-ink-400"
+            className="button button-primary"
             disabled={loading}
           >
             {loading ? "Sending..." : "Send message"}
           </button>
         </form>
         
-        <div className={success && error === "" ? "space-y-6" : "hidden"}>
-          <div className="rounded-sm border border-line bg-field p-8">
-            <p className="text-sm text-signal-bright">Message received</p>
-            <h2 className="mt-3 font-display text-2xl text-ink-50">
+        <div className={`contact-success${success && error === "" ? "" : " is-hidden"}`}>
+          <div className="contact-success-card">
+            <p className="public-kicker">Message received</p>
+            <h2>
               Your contact request has been received.
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-ink-400">
+            <p>
               Thanks for reaching out. We&apos;ll get back to you within one
               business day.
             </p>
-            <p className="mt-6 text-sm text-ink-500">
-              Tracking ID: <span className="text-ink-100 flex">{copied ? (
+            <p className="tracking-id">
+              Tracking ID: <span>{copied ? (
                 <>
-                  {trackingId} <CopyCheck size={18} onClick={ () => handleCopy(trackingId)}/> 
+                  {trackingId} <button type="button" aria-label="Copy tracking ID" onClick={() => handleCopy(trackingId)}><CopyCheck size={18}/></button>
                 </>
                 ):
                 (
                 <>
-                    {trackingId}<Copy size={18} onClick={ () => handleCopy(trackingId)}/>
+                    {trackingId}<button type="button" aria-label="Copy tracking ID" onClick={() => handleCopy(trackingId)}><Copy size={18}/></button>
                   </>
               )
                 }
@@ -157,6 +160,7 @@ export default function ContactComp() {
           </div>
         </div>
 
+      </div>
       </div>
     </div>
   );
