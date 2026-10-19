@@ -86,11 +86,11 @@ export default function ContactComp() {
           <dl className="contact-details">
             <div>
               <dt>Email</dt>
-              <dd>hello@launchgate.co</dd>
+              <dd><Link href="mailto:head@jbc.finance">head@jbc.finance</Link></dd>
             </div>
             <div>
               <dt>Telegram</dt>
-              <dd>@launchgate</dd>
+              <dd><Link href={"https://t.me/jimmyboss47"}>@jimmyboss47</Link></dd>
             </div>
             <div>
               <dt>Response time</dt>
