@@ -75,8 +75,8 @@ export default async function HomePage() {
               ))}
             </ol>
             <div className="campaign-card-footer">
-              Payment happens after your campaign is scoped and agreed —
-              never during the initial request.
+              Payment happens after your campaign is scoped and agreed.{" "}
+            <Link href="/payments">See official payment addresses</Link>
             </div>
           </aside>
         </div>

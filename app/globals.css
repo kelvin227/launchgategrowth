@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -1362,6 +1361,210 @@
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--glass);
+}
+
+/*
+  Inherits text color and background from your site so it matches in light
+  and dark mode. Borders and surfaces are derived from the current text color.
+  Only the two accent colors below are fixed.
+*/
+
+.page {
+  --line: color-mix(in srgb, currentColor 16%, transparent);
+  --surface: color-mix(in srgb, currentColor 5%, transparent);
+  --muted: color-mix(in srgb, currentColor 68%, transparent);
+  --caution: #b45309;
+  --caution-bg: color-mix(in srgb, #f59e0b 14%, transparent);
+  --stop: #b91c1c;
+
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .page {
+    --caution: #fbbf24;
+    --stop: #f87171;
+  }
+}
+
+.header {
+  margin-bottom: 1.75rem;
+}
+
+.title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.lede {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.notice {
+  margin-bottom: 2.5rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--caution);
+  border-left-width: 4px;
+  border-radius: 6px;
+  background: var(--caution-bg);
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.sectionNote {
+  margin: 0.375rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+
+.network {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tag {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* The one distinctive element: the address, split into groups of four
+   with the first and last group heavier, so people check the whole string. */
+.address {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.625rem;
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
+    monospace;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-variant-ligatures: none;
+}
+
+.address span {
+  font-weight: 400;
+}
+
+.address .edge {
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.875rem;
+}
+
+.copy {
+  min-width: 7.5rem;
+  padding: 0.4rem 0.875rem;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.copy:hover {
+  background: var(--surface);
+}
+
+.copy:focus-visible,
+.explorer:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.explorer {
+  color: inherit;
+  font-size: 0.9rem;
+  text-underline-offset: 3px;
+}
+
+.rewards {
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+}
+
+.rewardsHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.warnTag {
+  padding: 0.125rem 0.625rem;
+  border: 1px solid var(--stop);
+  border-radius: 999px;
+  color: var(--stop);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.footer {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.footer a {
+  color: inherit;
+}
+
+@media (max-width: 480px) {
+  .address {
+    font-size: 0.9rem;
+    gap: 0.25rem 0.5rem;
+  }
 }
 
 @media (max-width: 900px) {

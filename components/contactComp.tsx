@@ -82,6 +82,10 @@ export default function ContactComp() {
             Already submitted a campaign request? Our team will reach out
             directly. For anything else, reach us here.
           </p>
+          <p className="contact-intro">
+          Already agreed on an offer? <Link href="/payments">Find our payment addresses</Link>.
+
+          </p>
 
           <dl className="contact-details">
             <div>
